@@ -10,7 +10,7 @@ url = \
     ('https://books.toscrape.com/catalogue/the-boys-in-the-boat-nine-americans-and-their-epic-quest-for-gold-at-the'
      '-1936-berlin-olympics_992/index.html')
 
-# Récupération du code source de la page via une requête
+# Récupération du code source de la page via une requête HTTP
 response = requests.get(url)
 soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -23,8 +23,10 @@ soup = BeautifulSoup(response.text, 'html.parser')
 product_url = url
 upc = soup.find('th', string="UPC").find_next('td').text
 title = soup.find('h1').text
-price_incl_tax = soup.find('th', string="Price (incl. tax)").find_next('td').text
-price_excl_tax = soup.find('th', string="Price (excl. tax)").find_next('td').text
+price_incl_tax_raw = soup.find('th', string="Price (incl. tax)").find_next('td').text
+price_incl_tax = str(price_incl_tax_raw.lstrip('Â£') + " £")
+price_excl_tax_raw = soup.find('th', string="Price (excl. tax)").find_next('td').text
+price_excl_tax = str(price_excl_tax_raw.lstrip('Â£') + " £")
 number_available = soup.find('th', string="Availability").find_next('td').text
 product_description = soup.find('div', id="product_description").find_next('p').text
 category = soup.find('ul', class_='breadcrumb').find_all('a')[-1].text
@@ -46,7 +48,7 @@ ratings_map = {
 review_rating = ratings_map.get(rating_class, "Note non trouvée")
 
 image_url = soup.find('img')['src']
-image_url = 'https://books.toscrape.com' + image_url.lstrip('../..')
+image_url = 'https://books.toscrape.com/' + image_url.lstrip('../..')
 
 # En vue de l'écriture des données extraites dans un fichier .csv
 # organisé, on commence par distinguer, dans 2 listes, les noms
