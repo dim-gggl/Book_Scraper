@@ -75,10 +75,3 @@ with open('../data/product_datas.csv', mode='w', newline='') as file :
     writer = csv.writer(file, delimiter=',') # On spécifie la ',' pour séparer les données.
     writer.writerow(data_category) # La ligne d'en-tête, contenant les catégories
     writer.writerow(data_value) # La ligne de données
-
-
-
-
-
-
-
