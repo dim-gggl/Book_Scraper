@@ -1,10 +1,12 @@
+from typing import List
+
 import requests
 from bs4 import BeautifulSoup
 import csv
 
 
 root = "https://books.toscrape.com/"
-product_data_headers = [
+product_data_headers: list[str] = [
     "product_url", "universal_product_code", "title", "price_including_tax",
     "price_excluding_tax", "number_available", "product_description",
     "category", "review_rating", "image_url"
