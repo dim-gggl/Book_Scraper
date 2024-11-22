@@ -1,9 +1,6 @@
-from typing import List
-
 import requests
 from bs4 import BeautifulSoup
 import csv
-
 
 root = "https://books.toscrape.com/"
 product_data_headers: list[str] = [
