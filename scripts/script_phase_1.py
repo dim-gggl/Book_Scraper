@@ -2,17 +2,31 @@ import requests
 from bs4 import BeautifulSoup
 import csv
 
+"""
+To start here are 3 variables that we keep unchanged for all the process 
+since they are useful in every step of the mission :
+"""
+# Main URL that we will call and join to any relative URL
 root = "https://books.toscrape.com/"
+# The headers of every CSV files we are going to create
 product_data_headers: list[str] = [
     "product_url", "universal_product_code", "title", "price_including_tax",
     "price_excluding_tax", "number_available", "product_description",
     "category", "review_rating", "image_url"
 ]
-output_file_rep = f'../data'
+# A relative output path to the repertory the program is launch from
+output_file_rep = f'./'
 
 
 def scrape_book(url):
+    """
+    Scrape the book page
+    :param url: The url of the book page (str)
+    :return: The expected book datas
+    """
     response = requests.get(url)
+    response.encoding = response.apparent_encoding
+
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'html.parser')
 
@@ -26,7 +40,12 @@ def scrape_book(url):
         price_excl_tax = f"£ {price_excl_tax_raw.lstrip('Â£')}"
 
         number_available = soup.find('th', string="Availability").find_next('td').text
-        product_description = soup.find('div', id="product_description").find_next('p').text
+
+        description_tag = soup.find('div', id="product_description")
+        if description_tag:
+            product_description = description_tag.find_next('p').text
+        else:
+            product_description = "No description"
         category = soup.find('ul', class_='breadcrumb').find_all('a')[-1].text
 
         rating_tag = soup.find('p', class_='star-rating')
@@ -59,7 +78,7 @@ if __name__ == '__main__':
     product_data = scrape_book(url)
     if product_data:
         try:
-            with open(f'{output_file_rep}/single_book_datas.csv', mode='w', newline='', encoding="utf-8") as file :
+            with open(f'{output_file_rep}script1_book_details.csv', mode='w', newline='', encoding="utf-8") as file :
                 writer = csv.writer(file)
                 writer.writerow(product_data_headers) # La ligne d'en-tête, contenant les catégories
                 writer.writerow(product_data) # La ligne de données

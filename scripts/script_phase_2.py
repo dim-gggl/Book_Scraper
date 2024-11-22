@@ -6,8 +6,12 @@ from script_phase_1 import (scrape_book, root, product_data_headers, output_file
 
 
 def scrape_category(category_url):
-
-    current_url = f'{category_url}index.html'
+    """
+    Scrape all the chosen category pages
+    :param category_url: The chosen category's 1st page from the site's home page
+    :return: A list with the whole category books data
+    """
+    current_url = category_url
     all_books_data = []
 
     while current_url:
@@ -37,13 +41,14 @@ def scrape_category(category_url):
     return all_books_data
 
 
-if __name__ == '__main__':
-
-    category_url = f"{root}catalogue/category/books/historical-fiction_4/"
-    category_name = category_url.rstrip('./').split('/')[-1]
-    output_file = f"{output_file_rep}/{category_name}_product_details.csv"
-
-    category_books_data = scrape_category(category_url)
+def save_category_datas(product_data_headers, output_file_rep, category_name, category_books_data):
+    """
+    Saves a chosen category data to csv file
+    :param category_name: The chosen category name from <a> tag
+    :param category_books_data: The details of each book in the chosen category
+    :return: None
+    """
+    output_file = f"{output_file_rep}{category_name}_product_details.csv"
 
     if category_books_data:
         with open(output_file, mode='w', newline='', encoding="utf-8") as file:
@@ -53,3 +58,15 @@ if __name__ == '__main__':
         print(f"Données de la catégorie '{category_name}' sauvegardées")
     else:
         print(f"Aucune donnée trouvée pour la catégorie '{category_name}'")
+
+
+if __name__ == '__main__':
+
+    category_url = f"{root}catalogue/category/books/historical-fiction_4/"
+    category_name = category_url.rstrip('./').split('/')[-1]
+    category_books_data = scrape_category(category_url)
+
+    save_category_datas(product_data_headers, category_name, category_books_data)
+
+
+
