@@ -7,15 +7,15 @@ To start here are 3 variables that we keep unchanged for all the process
 since they are useful in every step of the mission :
 """
 # Main URL that we will call and join to any relative URL
-root = "https://books.toscrape.com/"
+ROOT = "https://books.toscrape.com/"
 # The headers of every CSV files we are going to create
-product_data_headers: list[str] = [
+HEADERS: list[str] = [
     "product_url", "universal_product_code", "title", "price_including_tax",
     "price_excluding_tax", "number_available", "product_description",
     "category", "review_rating", "image_url"
 ]
 # A relative output path to the repertory the program is launch from
-output_file_rep = f'./'
+OUTPUT_FILE_PATH = f'./'
 
 
 def scrape_book(url):
@@ -64,7 +64,7 @@ def scrape_book(url):
         review_rating = ratings_map.get(rating_class, "Note non trouvée")
 
         image_url_src = soup.find('img')['src']
-        image_url = root + image_url_src.lstrip('../..')
+        image_url = ROOT + image_url_src.lstrip('../..')
 
         return [
             product_url, upc, title, price_incl_tax, price_excl_tax, number_available,
@@ -74,15 +74,15 @@ def scrape_book(url):
         return None
 
 if __name__ == '__main__':
-    url = f'{root}catalogue/the-boys-in-the-boat-nine-americans-and-their-epic-quest-for-gold-at-the-1936-berlin-olympics_992/index.html' #noqa
+    url = f'{ROOT}catalogue/the-boys-in-the-boat-nine-americans-and-their-epic-quest-for-gold-at-the-1936-berlin-olympics_992/index.html' #noqa
     product_data = scrape_book(url)
     if product_data:
         try:
-            with open(f'{output_file_rep}script1_book_details.csv', mode='w', newline='', encoding="utf-8") as file :
+            with open(f'{OUTPUT_FILE_PATH}script1_book_details.csv', mode='w', newline='', encoding="utf-8") as file :
                 writer = csv.writer(file)
-                writer.writerow(product_data_headers) # La ligne d'en-tête, contenant les catégories
+                writer.writerow(HEADERS) # La ligne d'en-tête, contenant les catégories
                 writer.writerow(product_data) # La ligne de données
         except FileNotFoundError:
-            print(f"Erreur : {output_file_rep} est invalide")
+            print(f"Erreur : {OUTPUT_FILE_PATH} est invalide")
     else:
         print("Erreur : impossible de récupérer les données du livres")

@@ -4,3 +4,9 @@ venv/
 .idea/
 idea/
 idea
+.idea/.gitignore
+.idea/1_Analyse_de_marche_Python.iml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
