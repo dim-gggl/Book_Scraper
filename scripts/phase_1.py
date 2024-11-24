@@ -2,25 +2,21 @@ import requests
 from bs4 import BeautifulSoup
 import csv
 
-"""
-To start here are 3 variables that we keep unchanged for all the process 
-since they are useful in every step of the mission :
-"""
 # Main URL that we will call and join to any relative URL
 ROOT = "https://books.toscrape.com/"
 # The headers of every CSV files we are going to create
-HEADERS: list[str] = [
+HEADERS = [
     "product_url", "universal_product_code", "title", "price_including_tax",
     "price_excluding_tax", "number_available", "product_description",
     "category", "review_rating", "image_url"
 ]
 # A relative output path to the repertory the program is launch from
-OUTPUT_FILE_PATH = f'./'
+OUTPUT_FILE_PATH = f'./data'
 
 
 def scrape_book(url):
     """
-    Scrape the book page
+    Scrape a chosen book page
     :param url: The url of the book page (str)
     :return: The expected book datas
     """
@@ -51,8 +47,6 @@ def scrape_book(url):
         rating_tag = soup.find('p', class_='star-rating')
         rating_class = rating_tag['class'][1]
 
-        # Dictionnaire pour convertir le texte en valeur numérique
-
         ratings_map = {
             "One": "1/5",
             "Two": "2/5",
@@ -80,8 +74,9 @@ if __name__ == '__main__':
         try:
             with open(f'{OUTPUT_FILE_PATH}script1_book_details.csv', mode='w', newline='', encoding="utf-8") as file :
                 writer = csv.writer(file)
-                writer.writerow(HEADERS) # La ligne d'en-tête, contenant les catégories
-                writer.writerow(product_data) # La ligne de données
+                writer.writerow(HEADERS)
+                writer.writerow(product_data)
+                print(f"Book's data saved in : {OUTPUT_FILE_PATH}")
         except FileNotFoundError:
             print(f"Erreur : {OUTPUT_FILE_PATH} est invalide")
     else:

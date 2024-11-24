@@ -1,8 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import os
-from script_phase_1 import (ROOT, HEADERS, OUTPUT_FILE_PATH)
-from script_phase_2 import (scrape_category, save_category_datas)
+from phase_1 import (ROOT, OUTPUT_FILE_PATH)
+from phase_2 import (scrape_category, save_category_datas)
 
 
 def download_images(image_url, category_name, book_title):
@@ -13,7 +13,11 @@ def download_images(image_url, category_name, book_title):
     :param book_title: string with the book title to name the image after it
     :return: None
     """
-    image_output_dir = os.path.join(OUTPUT_FILE_PATH, "images", category_name)
+    image_output_dir = os.path.join(OUTPUT_FILE_PATH, "Categories", category_name, "Images")
+
+    if "/" in book_title:
+        book_title.replace("/", "_")
+
     image_name = f"{book_title}.jpg"
     save_path = os.path.join(image_output_dir, image_name)
 
@@ -30,7 +34,7 @@ def download_images(image_url, category_name, book_title):
         print(f"Error while downloading image {image_url}: {e}")
 
 
-def scrape_all_categories(ROOT, keep_images=False):
+def scrape_all_categories(keep_images=False):
     """
     Scrape all the categories
     :param root: the homepage url
@@ -47,18 +51,22 @@ def scrape_all_categories(ROOT, keep_images=False):
             category_url = ROOT + relative_url
             category_name = tag.text.strip()
 
+            category_output_dir = os.path.join(OUTPUT_FILE_PATH, "Categories", category_name)
+            os.makedirs(category_output_dir, exist_ok=True)
+
             print(f"Scraping category : {category_name}")
-            category_books_data = scrape_category(category_url)
+            category_name_extracted, category_books_data = scrape_category(category_url)
 
             if category_books_data:
-                save_category_datas(HEADERS, OUTPUT_FILE_PATH, category_name, category_books_data)
+                output_file = os.path.join(category_output_dir, f"{category_name}_product_details.csv")
+                save_category_datas(category_name_extracted, category_books_data, output_file)
 
                 if keep_images:
                     print(f"Downloading images from {category_name} category")
                     for book in category_books_data:
                         image_url = book[-1]
                         book_title = book[2]
-                        download_images(image_url, category_name, book_title)
+                        download_images(image_url, category_name_extracted, book_title)
 
                 print(f"{category_name} book details has been saved successfully.")
             else:
@@ -66,5 +74,5 @@ def scrape_all_categories(ROOT, keep_images=False):
 
 
 if __name__ == '__main__':
-    scrape_all_categories(ROOT, keep_images=False)
+    scrape_all_categories(keep_images=False)
     print("All categories scraped!")

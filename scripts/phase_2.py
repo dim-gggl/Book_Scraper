@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import csv
 from urllib.parse import urljoin
-from script_phase_1 import (scrape_book, ROOT, HEADERS, OUTPUT_FILE_PATH)
+from phase_1 import (scrape_book, ROOT, HEADERS, OUTPUT_FILE_PATH)
 
 
 def scrape_category(category_url):
@@ -13,6 +13,7 @@ def scrape_category(category_url):
     """
     current_url = category_url
     all_books_data = []
+    category_name = None
 
     while current_url:
         response = requests.get(current_url)
@@ -27,6 +28,8 @@ def scrape_category(category_url):
 
                 book_data = scrape_book(absolute_url)
                 if book_data:
+                    if category_name is None:
+                        category_name = book_data[7]
                     all_books_data.append(book_data)
                 else:
                     print(f"Impossible de scraper les données pour {absolute_url}")
@@ -38,17 +41,18 @@ def scrape_category(category_url):
         else:
             current_url = None
 
-    return all_books_data
+    return category_name, all_books_data
 
 
-def save_category_datas(HEADERS, OUTPUT_FILE_PATH, category_name, category_books_data):
+def save_category_datas(category_name, category_books_data, output_file=None):
     """
     Saves a chosen category data to csv file
     :param category_name: The chosen category name from <a> tag
     :param category_books_data: The details of each book in the chosen category
     :return: None
     """
-    output_file = f"{OUTPUT_FILE_PATH}{category_name}_product_details.csv"
+    if output_file is None:
+        output_file = f"{OUTPUT_FILE_PATH}/{category_name}_product_details.csv"
 
     if category_books_data:
         with open(output_file, mode='w', newline='', encoding="utf-8") as file:
@@ -63,10 +67,9 @@ def save_category_datas(HEADERS, OUTPUT_FILE_PATH, category_name, category_books
 if __name__ == '__main__':
 
     category_url = f"{ROOT}catalogue/category/books/historical-fiction_4/"
-    category_name = category_url.rstrip('./').split('/')[-1]
-    category_books_data = scrape_category(category_url)
+    category_name, category_books_data = scrape_category(category_url)
 
-    save_category_datas(HEADERS, category_name, category_books_data)
+    save_category_datas(category_name, category_books_data)
 
 
 
