@@ -48,6 +48,10 @@ pip install -r requirements.txt
 
 ### **Exécuter les scripts**
 
+Il est recommandé d'exécuter les `scripts` directement depuis leur dossier parent car ils sont configurés pour enregistrer les données extraites suivat le chemin relatif `./output_data`
+qui est contenu dans la variable `OUTPUT_FILE_PATH`.
+
+**Sinon vous pouvez personnaliser le chemin de sortie de vos fichiers en modifiant ``OUTPUT_FILE_PATH`` dans `phase_1.py`**
 #### **Script 1 : Scraper un livre unique**
 - **Commande :**
     ```bash

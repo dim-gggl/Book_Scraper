@@ -11,7 +11,7 @@ HEADERS = [
     "category", "review_rating", "image_url"
 ]
 # A relative output path to the repertory the program is launch from
-OUTPUT_FILE_PATH = f'./data'
+OUTPUT_FILE_PATH = f'./output_data'
 
 
 def scrape_book(url):
