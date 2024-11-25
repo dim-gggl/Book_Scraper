@@ -1,7 +1,7 @@
 # Web Scraper pour Books to Scrape
 
 ## **Description**
-Ce projet Python scrape le site [Books to Scrape](http://books.toscrape.com/) pour collecter des informations sur les livres : prix, descriptions, catégories, évaluations, et images des couvertures. Les scripts sont conçus pour être modulaires et faciles à personnaliser, permettant aux utilisateurs de :
+Ce projet Python scrape le site [Books to Scrape](http://books.toscrape.com/) pour collecter des informations sur les livres : prix, descriptions, catégories, évaluations, et images des couvertures. Les scripts sont conçus pour permettre aux utilisateurs de :
 - Extraire les informations d'un seul livre.
 - Parcourir et scraper une catégorie complète.
 - Automatiser le scraping de toutes les catégories.
@@ -18,8 +18,7 @@ Chaque fichier CSV sera stocké dans un dossier dédié à sa catégorie en comp
   - `BeautifulSoup4`
   - `csv`
 
-> **Recommandé :
->** Utiliser un environnement virtuel pour isoler les dépendances :
+> **Recommandé :** Utiliser un environnement virtuel pour isoler les dépendances :
 ```bash
 python -m venv venv
 source venv/bin/activate  # Sous Windows : venv\Scripts\activate
@@ -48,7 +47,7 @@ pip install -r requirements.txt
 
 ### **Exécuter les scripts**
 
-Il est recommandé d'exécuter les `scripts` directement depuis leur dossier parent car ils sont configurés pour enregistrer les données extraites suivat le chemin relatif `./output_data`
+Il est recommandé d'exécuter les `scripts` directement depuis leur dossier parent, car ils sont configurés pour enregistrer les données extraites suivant le chemin relatif `./output_data`
 qui est contenu dans la variable `OUTPUT_FILE_PATH`.
 
 **Sinon vous pouvez personnaliser le chemin de sortie de vos fichiers en modifiant ``OUTPUT_FILE_PATH`` dans `phase_1.py`**
@@ -79,7 +78,7 @@ qui est contenu dans la variable `OUTPUT_FILE_PATH`.
     ```
 
 - **Modification possible :**
-    - Localisez cette ligne dans `script_phase_2.py` :
+    - Localisez cette ligne dans `phase_2.py` :
         ```python
         category_url = f'{ROOT}catalogue/category/books/historical-fiction_4/'
         ```

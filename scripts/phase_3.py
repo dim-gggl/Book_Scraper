@@ -14,11 +14,7 @@ def download_images(image_url, category_name, book_title):
     :return: None
     """
     image_output_dir = os.path.join(OUTPUT_FILE_PATH, "Categories", category_name, "Images")
-
-    if "/" in book_title:
-        book_title.replace("/", "_")
-
-    image_name = f"{book_title}.jpg"
+    image_name = f"{book_title.replace("/", "_")}.jpg"
     save_path = os.path.join(image_output_dir, image_name)
 
     try:
