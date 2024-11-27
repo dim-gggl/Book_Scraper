@@ -11,7 +11,7 @@ HEADERS = [
     "category", "review_rating", "image_url"
 ]
 # A relative output path to the repertory the program is launch from
-OUTPUT_FILE_PATH = f'./output_data'
+OUTPUT_FILE_PATH = f'./output_data/'
 
 
 def scrape_book(url):
@@ -72,7 +72,7 @@ if __name__ == '__main__':
     product_data = scrape_book(url)
     if product_data:
         try:
-            with open(f'{OUTPUT_FILE_PATH}script1_book_details.csv', mode='w', newline='', encoding="utf-8") as file :
+            with open(f'{OUTPUT_FILE_PATH}phase_1_book_details.csv', mode='w', newline='', encoding="utf-8") as file :
                 writer = csv.writer(file)
                 writer.writerow(HEADERS)
                 writer.writerow(product_data)

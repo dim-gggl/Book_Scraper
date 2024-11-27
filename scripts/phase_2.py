@@ -52,7 +52,7 @@ def save_category_datas(category_name, category_books_data, output_file=None):
     :return: None
     """
     if output_file is None:
-        output_file = f"{OUTPUT_FILE_PATH}/{category_name}_product_details.csv"
+        output_file = f"{OUTPUT_FILE_PATH}/phase_2_{category_name}_product_details.csv"
 
     if category_books_data:
         with open(output_file, mode='w', newline='', encoding="utf-8") as file:
