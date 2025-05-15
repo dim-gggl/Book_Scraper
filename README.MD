@@ -1,108 +1,117 @@
-# Web Scraper pour Books to Scrape
+# 📚 Book\_Scraper
 
-## **Description**
-Ce projet Python scrape le site [Books to Scrape](http://books.toscrape.com/) pour collecter des informations sur les livres : prix, descriptions, catégories, évaluations, et images des couvertures. Les scripts sont conçus pour permettre aux utilisateurs de :
-- Extraire les informations d'un seul livre.
-- Parcourir et scraper une catégorie complète.
-- Automatiser le scraping de toutes les catégories.
-- Télécharger les images des livres.
+> Script Python complet pour scraper automatiquement les livres du site [Books to Scrape](http://books.toscrape.com/), exporter les données en CSV par catégorie et télécharger les images des couvertures.
 
-Chaque fichier CSV sera stocké dans un dossier dédié à sa catégorie en compagnie d'un sous-dossier où se trouveront les images portant le titre du livre dont elles sont la couverture.
+## 🚀 Fonctionnalités
+
+* ✅ Scraping de **toutes les catégories** de livres
+* ✅ Récupération des **titres, prix, stock, note, description, image**
+* ✅ Export **CSV** par catégorie dans un dossier `output_data/`
+* ✅ Téléchargement des **images de couverture** dans des sous-dossiers en option
+* ✅ Navigation automatique entre les pages (pagination)
 
 ---
 
-## **Prérequis**
-- Python 3.8 ou version ultérieure.
-- Bibliothèques nécessaires :
-  - `requests`
-  - `BeautifulSoup4`
-  - `csv`
+## 🛠️ Installation
 
-> **Recommandé :** Utiliser un environnement virtuel pour isoler les dépendances :
 ```bash
-python -m venv venv
-source venv/bin/activate  # Sous Windows : venv\Scripts\activate
-pip install -r requirements.txt
-```
----
-
-## Installation
-
-### **Étape 1 : Cloner le projet**
-```bash
-git clone https://github.com/dim-gggl/1_Analyse_de_marche_Python.git
-cd 1_Analyse_de_marche_Python
+git clone https://github.com/dim-gggl/Book_Scraper.git
+cd Book_Scraper
 ```
 
-### **Étape 2 : Installer les dépendances**
+Puis installation d'un environnement virtuel :
 
-#### **Copiez le code :**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+Et installation des dépendances:
+
 ```bash
 pip install -r requirements.txt
 ```
 
 ---
 
-## Utilisation
+## 🧑‍💻 Utilisation
 
-### **Exécuter les scripts**
 
-Il est recommandé d'exécuter les `scripts` directement depuis leur dossier parent, car ils sont configurés pour enregistrer les données extraites suivant le chemin relatif `./output_data`
-qui est contenu dans la variable `OUTPUT_FILE_PATH`.
+```bash
+source venv/bin/activate
+python3 main.py
+```
 
-**Sinon vous pouvez personnaliser le chemin de sortie de vos fichiers en modifiant ``OUTPUT_FILE_PATH`` dans `phase_1.py`**
-#### **Script 1 : Scraper un livre unique**
-- **Commande :**
-    ```bash
-    python phase_1.py
-    ```
+Et laisse-toi guider par le menu du terminal.
 
-- **Modification possible :**
-    - Localisez cette ligne dans `phase_1.py` :
-        ```python
-        url = f'{ROOT}catalogue/the-boys-in-the-boat-nine-americans-and-their-epic-quest-for-gold-at-the-1936-berlin-olympics_992/index.html'
-        ```
-    - Remplacez l'URL après `ROOT` par celle d'un autre livre. Exemple :
-        ```python
-        url = f'{ROOT}catalogue/a-light-in-the-attic_1000/index.html'
-        ```
-    - **Attention :** L'URL doit inclure le chemin relatif du livre (ne pas modifier `ROOT`). 
-    - Et, **évidemment**, le livre doit provenir du site.
+📝 Les fichiers CSV et les images sont générés automatiquement dans le dossier `scripts/output_data`.
 
 ---
 
-### **Script 2 : Scraper une catégorie complète**
-- **Commande :**
-    ```bash
-    python phase_2.py
-    ```
+## 📂 Arborescence simplifiée
 
-- **Modification possible :**
-    - Localisez cette ligne dans `phase_2.py` :
-        ```python
-        category_url = f'{ROOT}catalogue/category/books/historical-fiction_4/'
-        ```
-    - Remplacez l'URL de catégorie par celle de votre choix. Exemple pour la catégorie "Science" :
-        ```python
-        category_url = f'{ROOT}catalogue/category/books/science_22/'
-        ```
-    - **Astuce :** Les noms de catégories sont visibles sur la page d'accueil de *Books to Scrape*.
-
----
-
-### **Script 3 : Scraper toutes les catégories**
-- **Commande :**
-    ```bash
-    python phase_3.py
-    ```
-
-- **Option : Télécharger les images de couvertures dans des dossiers par catégorie et nommées d'après le livre qu'elles représentent**
-    - Activez l'option `keep_images=True` dans la fonction `scrape_all_categories`.
+```
+Book_Scraper/
+├── scripts/
+│   ├── __init__.py
+│   ├── phase_1.py
+│   ├── phase_2.py
+│   ├── phase_3.py
+│   ├── phase_4.py
+│   ├── utils.py
+│   └── output_data/
+│       ├── book1.csv
+│       └── ...
+├── __init__.py
+├── main.py
+├── README.md
+└── requirements.txt
+```
 
 ---
 
-### **Script 4 : Automatiser toutes les phases**
-- **Commande :**
-    ```bash
-    python phase_4.py
-    ```
+## 📌 Extrait de données
+
+| universal_product_code   | title    | price_including_tax  | price_excluding_tax | number_available | category | review_rating |
+| ------------------------ | --------- | ------------------- | -------------------- | ---------------- | -------- | -------------- |
+| 90fa61229261140a | Tipping the Velvet | £ 53.74 | £ 53.74 | In stock (20 available) | Historical Fiction | 1/5 |
+
+---
+
+## 🎯 Objectifs pédagogiques
+
+* Apprentissage du scraping HTML avec `BeautifulSoup`
+* Automatisation de collecte/export/traitement de données
+* Préparation à des projets plus ambitieux de type API ou intéractions avec des databases
+
+---
+
+## 📌 À améliorer
+
+* [ ] Envisager une refactorisation en P.O.O
+* [ ] Améliorer l'architecture, plus modulaire
+* [ ] Interface web simple (Flask)
+* [ ] Ajout de tests unitaires
+* [ ] Ajout de logs ou d’un mode `verbose`
+
+---
+
+## 🧠 Auteur
+
+👤 **Dimitri Gaggioli**
+Développeur Python · [dim-gggl](https://github.com/dim-gggl)
+
+---
+
+## 🌍 Stack
+
+* Python 3.12+
+* BeautifulSoup
+* Requests
+* CSV, OS, re, urllib
+
+---
+
+## 🌍 Licence
+
+MIT — Faites-en bon usage.

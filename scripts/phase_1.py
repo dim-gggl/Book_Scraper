@@ -11,7 +11,7 @@ HEADERS = [
     "category", "review_rating", "image_url"
 ]
 # A relative output path to the repertory the program is launch from
-OUTPUT_FILE_PATH = f'./output_data/'
+OUTPUT_FILE_PATH = f'scripts/output_data/'
 
 
 def scrape_book(url):
@@ -30,19 +30,30 @@ def scrape_book(url):
         upc = soup.find('th', string="UPC").find_next('td').text
         title = soup.find('h1').text
 
-        price_incl_tax_raw = soup.find('th', string="Price (incl. tax)").find_next('td').text.strip()
+        price_incl_tax_raw = soup.find(
+            'th', string="Price (incl. tax)"
+            ).find_next('td').text.strip()
+
         price_incl_tax = f"£ {price_incl_tax_raw.lstrip('Â£')}"
-        price_excl_tax_raw = soup.find('th', string="Price (excl. tax)").find_next('td').text
+        price_excl_tax_raw = soup.find(
+            'th', string="Price (excl. tax)"
+            ).find_next('td').text
+
         price_excl_tax = f"£ {price_excl_tax_raw.lstrip('Â£')}"
 
-        number_available = soup.find('th', string="Availability").find_next('td').text
+        number_available = soup.find(
+            'th', string="Availability"
+            ).find_next('td').text
 
         description_tag = soup.find('div', id="product_description")
         if description_tag:
             product_description = description_tag.find_next('p').text
         else:
             product_description = "No description"
-        category = soup.find('ul', class_='breadcrumb').find_all('a')[-1].text
+
+        category = soup.find(
+            'ul', class_='breadcrumb'
+            ).find_all('a')[-1].text
 
         rating_tag = soup.find('p', class_='star-rating')
         rating_class = rating_tag['class'][1]
@@ -68,16 +79,42 @@ def scrape_book(url):
         return None
 
 if __name__ == '__main__':
-    url = f'{ROOT}catalogue/the-boys-in-the-boat-nine-americans-and-their-epic-quest-for-gold-at-the-1936-berlin-olympics_992/index.html' #noqa
+
+    choice = input(
+        "\n\n\n\n\n"
+        f"{'Do you know the url for the book you\'re attempting to scrape the data from ?':^90}\n"
+        f"{'Yes / No (y/n)':^90}\n"
+        f"{'':44}"
+        ).strip()
+
+    match choice:
+        case "y":
+            url = input(
+                f"{'Please paste here the url starting with https://books.toscrape.com/':^90}\n"
+                f"{'':44}"
+                ).strip()
+        case "n":
+            url = f'{ROOT}catalogue/the-boys-in-the-boat-nine-americans-and-their-epic-quest-for-gold-at-the-1936-berlin-olympics_992/index.html' #noqa
+        case _:
+            raise ValueError("Error : wrong input")
+
     product_data = scrape_book(url)
+
     if product_data:
+        file_path = f'{OUTPUT_FILE_PATH}/phase_1/book_details_{product_data[1]}.csv'
         try:
-            with open(f'{OUTPUT_FILE_PATH}phase_1_book_details.csv', mode='w', newline='', encoding="utf-8") as file :
+            with open(
+                file_path,
+                mode='w',
+                newline='',
+                encoding="utf-8"
+                ) as file :
                 writer = csv.writer(file)
                 writer.writerow(HEADERS)
                 writer.writerow(product_data)
-                print(f"Book's data saved in : {OUTPUT_FILE_PATH}")
+                print(f"Book's data saved in : {file_path}")
         except FileNotFoundError:
             print(f"Erreur : {OUTPUT_FILE_PATH} est invalide")
+
     else:
         print("Erreur : impossible de récupérer les données du livres")
